@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 6rem;
+            color: #ff1493;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+            animation: pulse 1.5s ease-in-out infinite;
+            letter-spacing: 0.3rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .rose {
+            font-size: 15rem;
+            animation: rotate 10s linear infinite;
+            margin: 2rem;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .emoji-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .emoji {
+            font-size: 5rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .emoji:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .emoji:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .emoji:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 4s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .cursor-trail {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff1493;
+            pointer-events: none;
+            animation: fadeOut 1.5s ease-out forwards;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        .radio-container {
+            margin-top: 3rem;
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .thank-you-message {
+            display: none;
+            font-size: 5rem;
+            color: #ffff00;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+            margin-top: 2rem;
+            animation: slideIn 0.5s ease-out;
+            text-align: center;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .thank-you-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <h1>DO YOU LOVE ME</h1>
+    
+    <div class="rose">🌹</div>
+    
+    <div class="emoji-container">
+        <span class="emoji">😍</span>
+        <span class="emoji">😍</span>
+        <span class="emoji">😍</span>
+        <span class="emoji">😍</span>
+        <span class="emoji">😍</span>
+    </div>
+
+    <div class="radio-container">
+        <div class="radio-option">
+            <input type="radio" id="yes1" name="love" value="yes">
+            <label for="yes1">YES</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" id="yes2" name="love" value="yes">
+            <label for="yes2">YES</label>
+        </div>
+    </div>
+
+    <div class="thank-you-message" id="thankYouMessage">
+        THANKS FOR LOVING ME 😍
+    </div>
+
+    <script>
+        // Create floating hearts in the background
+        const heartsContainer = document.getElementById('hearts');
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+        
+        // Create hearts periodically
+        setInterval(createHeart, 300);
+        
+        // Create initial hearts
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createHeart, i * 200);
+        }
+
+        // Cursor trail effect with "yes"
+        document.addEventListener('mousemove', function(e) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.textContent = 'yes';
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                trail.remove();
+            }, 1500);
+        });
+
+        // Radio button event listeners
+        const radio1 = document.getElementById('yes1');
+        const radio2 = document.getElementById('yes2');
+        const thankYouMessage = document.getElementById('thankYouMessage');
+
+        function showThankYouMessage() {
+            thankYouMessage.classList.add('show');
+        }
+
+        radio1.addEventListener('change', showThankYouMessage);
+        radio2.addEventListener('change', showThankYouMessage);
+    </script>
+</body>
+</html>
